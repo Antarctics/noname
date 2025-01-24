@@ -14,13 +14,46 @@
         window.$docsify = {
             loadSidebar: true,
             name: '无名杀教程',
-            subMaxLevel: 4,
+            subMaxLevel: 5,
             search: 'auto',
+            search: {
+                placeholder: {
+                    '/zh-cn/': '搜索文档',
+                    '/': 'Type to search'
+                },
+                noData: {
+                    '/zh-cn/': '未找到结果',
+                    '/': 'No Results'
+                },
+                depth: 5
+            },
+            pagination: {
+                previousText: '上一章节',
+                nextText: '下一章节',
+                crossChapter: true,
+                crossChapterText: true,
+            },
         }
 
     </script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
     <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
+    <script src="//unpkg.com/docsify-copy-code"></script>
+    <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
+    <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+
+    <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+    <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script>
+        const gitalk = new Gitalk({
+            clientID: 'Ov23liHXtuS27sA5IYfi',
+            clientSecret: '0f369745ddb75f274c78c52b060d6ad5b24c9a61',
+            repo: 'noname',
+            owner: 'Antarctics',
+            admin: ['Antarctics'],
+            distractionFreeMode: true
+        })
+    </script>
 </body>
 
 </html>
