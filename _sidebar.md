@@ -1,6 +1,6 @@
 - [第一章：基础知识 | 🟩 Easy](./chapter1-basics.md)
 - [第二章：角色制作 | 🟩 Easy](./chapter2-character.md)
-- [第三章：技能开发 | 🟨 Medium](./chapter3-skill/)
+- [第三章：技能开发 | 🟨 Medium]
 - [第四章：卡牌开发 | 🟩 Easy](./chapter4-card.md)
-- [第五章：进阶开发 | 🟥 Hard](./chapter5-advanced/)
-- [附录](./appendix/)
+- [第五章：进阶开发 | 🟥 Hard]
+- [附录]
