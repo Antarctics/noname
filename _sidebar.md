@@ -1,6 +1,6 @@
 - [第一章：基础知识 | 🟩 Easy](./chapter1-basics.md)
 - [第二章：角色制作 | 🟩 Easy](./chapter2-character.md)
-- [第三章：技能开发 | 🟨 Medium]()
+- 第三章：技能开发 | 🟨 Medium
 - - [3.1 技能系统](./chapter3-skill/3.1-skill-system.md)
 - - [3.2 触发时机](./chapter3-skill/3.2-trigger.md)
 - - [3.3 技能效果](./chapter3-skill/3.3-effect.md)
@@ -9,7 +9,7 @@
 - - [3.6 技能动画](./chapter3-skill/3.6-animation.md)
 - - [3.7 技能类型概述](./chapter3-skill/3.7-skill-types.md)
 - [第四章：卡牌开发 | 🟩 Easy](./chapter4-card.md)
-- [第五章：进阶开发 | 🟥 Hard]
+- 第五章：进阶开发 | 🟥 Hard
 - - [5.1 AI设计](./chapter5-advanced/5.1-ai.md)
 - - [5.2 联机适配](./chapter5-advanced/5.2-online.md)
 - - [5.3 配音系统](./chapter5-advanced/5.3-audio.md)
