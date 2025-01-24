@@ -13,7 +13,7 @@
 - 角色系统格式
 - 参数实例演示
 
-### [第三章：技能开发 | 🟨 Medium]
+### 第三章：技能开发 | 🟨 Medium
 - [3.1 技能系统](./chapter3-skill/3.1-skill-system.md)
 - [3.2 触发时机](./chapter3-skill/3.2-trigger.md)
 - [3.3 技能效果](./chapter3-skill/3.3-effect.md)
@@ -28,14 +28,14 @@
 - 卡牌动画
 - 卡牌音效
 
-### [第五章：进阶开发 | 🟥 Hard]
+### 第五章：进阶开发 | 🟥 Hard
 - [7.1 AI设计](./chapter5-advanced/5.1-ai.md)
 - [7.2 联机适配](./chapter5-advanced/5.2-online.md)
 - [7.3 配音系统](./chapter5-advanced/5.3-audio.md)
 - [7.4 皮肤系统](./chapter5-advanced/5.4-skin.md)
 - [7.5 代码规范](./chapter5-advanced/5.5-code-standard.md)
   
-### [附录]
+### 附录
 - [A. API参考](./appendix/api.md)
 - [B. 常见问题](./appendix/faq.md)
 
