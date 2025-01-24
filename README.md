@@ -13,7 +13,7 @@
 - 角色系统格式
 - 参数实例演示
 
-### [第三章：技能开发 | 🟨 Medium](./chapter3-skill/)
+### [第三章：技能开发 | 🟨 Medium]
 - [3.1 技能系统](./chapter3-skill/3.1-skill-system.md)
 - [3.2 触发时机](./chapter3-skill/3.2-trigger.md)
 - [3.3 技能效果](./chapter3-skill/3.3-effect.md)
@@ -28,15 +28,15 @@
 - 卡牌动画
 - 卡牌音效
 
-### [第五章：进阶开发 | 🟥 Hard](./chapter5-advanced/)
+### [第五章：进阶开发 | 🟥 Hard]
 - [7.1 AI设计](./chapter5-advanced/5.1-ai.md)
 - [7.2 联机适配](./chapter5-advanced/5.2-online.md)
 - [7.3 配音系统](./chapter5-advanced/5.3-audio.md)
 - [7.4 皮肤系统](./chapter5-advanced/5.4-skin.md)
 - [7.5 代码规范](./chapter5-advanced/5.5-code-standard.md)
   
-### [附录](./appendix/)
-- [A. API参考](./appendix/api-reference.md)
+### [附录]
+- [A. API参考](./appendix/api.md)
 - [B. 常见问题](./appendix/faq.md)
 
 ## 如何使用本教程
@@ -53,6 +53,7 @@
 2. 示例代码来自游戏源码或官方扩展,经过实际验证
 3. 教程会持续更新,欢迎提出建议和意见
 4. 更多扩展实例可以参考游戏自带扩展和其他玩家的作品
+5. 本教程不代表权威相关，一切以官方源码为准！
 
 </br>
 让我们开始无名杀扩展开发的学习之旅吧！ 
