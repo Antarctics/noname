@@ -17,8 +17,14 @@
             subMaxLevel: 5,
             search: 'auto',
             search: {
-                placeholder: '搜索文档',
-                noData: '未找到结果',
+                placeholder: {
+                    '/zh-cn/': '搜索文档',
+                    '/': 'Type to search'
+                },
+                noData: {
+                    '/zh-cn/': '未找到结果',
+                    '/': 'No Results'
+                },
                 depth: 5
             },
             pagination: {
@@ -27,28 +33,29 @@
                 crossChapter: true,
                 crossChapterText: true,
             },
+            giscus: {
+                repo: "Antarctics/noname",
+                repoId: "R_kgDONu-Aug",
+                category: "Show and tell",
+                categoryId: "DIC_kwDONu-Aus4CmTjv",
+                mapping: "url",
+                reactionsEnabled: "1",
+                strict: "1",
+                emitMetadata: "0",
+                inputPosition: "top",
+                theme: "preferred_color_scheme",
+                lang: "zh-CN",
+                loading: "lazy"
+            },
         }
 
-        
     </script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
     <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
     <script src="//unpkg.com/docsify-copy-code"></script>
     <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
-    <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
-
-    <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
-    <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
-    <script>
-        const gitalk = new Gitalk({
-            clientID: 'Ov23liHXtuS27sA5IYfi',
-            clientSecret: '0f369745ddb75f274c78c52b060d6ad5b24c9a61',
-            repo: 'noname',
-            owner: 'Antarctics',
-            admin: ['Antarctics'],
-            distractionFreeMode: true
-        })
-    </script>
+    <link rel="stylesheet" href="https://unpkg.com/docsify-giscus@1.0.0/dist/giscus.css">
+    <script src="https://unpkg.com/docsify-giscus@1.0.0/dist/docsify-giscus.min.js"></script>
 </body>
 
 </html>
