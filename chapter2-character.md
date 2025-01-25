@@ -53,7 +53,7 @@ translate: {
    - `"zhu"`: 主公武将
    - `"boss"`: Boss武将
    - `"forbidai"`: 禁止AI使用
-   - `"unseenn"`: 不可见
+   - `"unseen"`: 不可见
    - `"doublegroup:xxx:xxx"`: 多势力标签
    - 其他自定义标记
 
