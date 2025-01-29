@@ -39,7 +39,7 @@
 ### 附录
 - [A. API参考](./appendix/api.md)
 - [B. 常见问题](./appendix/faq.md)
-- [C. 共享手牌技能示例]((./appendix/share-skill.md))
+- [C. 共享手牌技能示例](./appendix/share-skill.md)
 
 ## 如何使用本教程
 
