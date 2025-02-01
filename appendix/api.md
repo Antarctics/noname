@@ -636,3 +636,57 @@ game.broadcastAll()    // 广播给所有玩家
 game.syncState()       // 同步状态
 game.waitForPlayer()   // 等待玩家
 ```
+
+## 6. 窗口(UI)相关API
+### 6.1 对话框（Dialog）
+```javascript
+/**
+ * 创建游戏内对话框组件，支持：
+ * - 文本/卡牌/角色/按钮/自定义元素
+ * 
+ * @param {string} title - 对话框标题（支持HTML）
+ * @param {Array} content - 内容定义数组，结构为：
+ *   [
+ *     contentData,   // 内容数据（类型取决于contentType）
+ *     contentType    // 内容类型标识符（"vcard"/"character"/"textbuttons"等）
+ *   ]
+ * @param {...(string|boolean)} options - 配置选项：
+ *   - "hidden"        : 创建后不自动打开（需手动调用open()）
+ *   - true            : 静态模式（禁用关闭功能）
+ *   - "forcebutton"   : 强制显示按钮
+ *   - "notouchscroll" : 禁用触摸滚动
+ *   - "noforcebutton" : 强制隐藏按钮
+ * 
+ * @example 基础对话框
+ * const dialog = ui.create.dialog("提示", ["系统错误！", "text"]);
+ * 
+ * @example 卡牌选择对话框
+ * const dialog = ui.create.dialog("选择手牌", [player.getCards("h"), "vcard"], "forcebutton");
+ */
+
+ui.create.dialog(title,content,options)
+
+/**
+ * 对话框内容类型定义
+ * @property {string} vcard - 虚拟卡牌（数据格式：[]Card数组）
+ * @property {string} card - 卡牌列表（数据格式：[]Card数组）
+ * @property {string} character - 角色信息（数据格式：角色名称）
+ * @property {string} player - 玩家列表（数据格式：[]对象数组）
+ * @property {string} textbutton - 文本按钮（数据格式：[link, text]）
+ * @property {string} tdnodes - 表格按钮（数据格式：[]文本数组）
+ * @property {string} blank - 卡牌背面（数据格式：[]Card数组）
+
+ */
+
+/**
+ * 对话框实例方法
+ * @method open() - 打开对话框
+ * @method close() - 强制关闭对话框
+ * @method add(content) - 动态添加内容（参数格式同构造函数）
+ * @method addText(text, center) - 添加文本段落（center: 是否居中）
+ * @method addNewRow(buttons) - 添加横向按钮行（按钮配置数组）
+ * @property {boolean} supportsPagination - 分页支持开关（默认false）
+ * @property {Map} paginationMap - 分页控制器映射表（需开启分页）
+ * @property {boolean} static - 静态模式开关（禁用关闭）
+ */
+ ```
