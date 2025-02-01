@@ -12,6 +12,10 @@
     <div id="app">正在加载中...</div>
     <script>
         window.$docsify = {
+            timeUpdater: {
+                text: "<div align='center' width='200px' style='color:gray;font-size:10px'>-------------- 最后更新时间:&emsp;{docsify-updated} --------------</div>",
+                formatUpdated: "{YYYY} 年 {MM} 月 {DD} 日",
+            },
             loadSidebar: true,
             name: '无名杀扩展开发教程',
             subMaxLevel: 5,
@@ -68,6 +72,7 @@
         }
 
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-updated/src/time-updater.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
     <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
     <script src="//unpkg.com/docsify-copy-code"></script>
