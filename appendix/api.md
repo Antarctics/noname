@@ -8,13 +8,16 @@ player.name          // 武将名称
 player.sex           // 性别(male/female)
 player.group         // 势力
 player.hp            // 当前体力值
+player.getDamagedHp  // 已损失体力值
 player.maxHp         // 体力上限
 player.hujia         // 护甲值
 player.side          // 玩家阵营
 player.identity      // 身份
+player._trueMe       // 控制权
+player.getSeatNum    // 座位号
 ```
 
-### 1.2 状态判断
+### 1.2 状态相关
 ```javascript
 player.isDead()      // 是否已阵亡
 player.isAlive()     // 是否存活
@@ -25,6 +28,32 @@ player.isTurnedOver()// 是否翻面
 player.isOut()       // 是否离场
 player.isUnseen()    // 是否暗将
 player.isMad()       // 是否混乱
+player.changeGroup() // 修改势力
+player.isPhaseUsing()     // 是否为出牌阶段
+player.canCompare(target) // 能否拼点
+player.inRange(target)    // 是否在攻击范围
+player.inRangeOf(source)  // 是否处于攻击范围
+// 区域相关
+/**
+ * 废除装备栏
+ * - 'equip1'：武器。
+ * - 'equip2'：防具。
+ * - 'equip3'：防御马。
+ * - 'equip4'：进攻马。
+ * - 'equip5'：宝物。
+ * @param {string|number} arg - 废除装备栏的位置。
+ */
+player.disableEquip(arg)
+player.enableEquip()       // 恢复装备栏
+player.isDisabled()        // 是否废除
+player.isEmpty()           // 是否为空
+player.swapEquip(target)   // 交换装备
+player.countDisabled()     // 废除数量
+
+player.disableJudge()     // 废除判定区
+player.enableJudge()      // 恢复判定区
+
+player.getHistory()
 ```
 
 ### 1.3 技能相关
@@ -310,6 +339,12 @@ player.getExpansions(tag)
  * @param {string} tag - 要匹配的标签。
  */
 player.hasExpansions(tag)
+/**
+ * 获取玩家本回合内使用倒数第X+1张牌
+ * 
+ * @param {number} num - 第X+1张牌，默认为0。
+ */
+player.getLastUsed(num)
 ```
 
 ### 1.5 伤害与回复
@@ -390,7 +425,7 @@ player.gainMaxHp()
  */
 player.changeHujia(num, type, limit)
 ```
-// 后续函数的参数注释将在后续编辑中添加。
+
 ### 1.6 选择与交互
 ```javascript
 // 选择目标
@@ -408,7 +443,6 @@ player.changeHujia(num, type, limit)
  *   - 第二个 `function` 参数：指定 AI 逻辑。
  * - `string` 类型参数：指定提示信息。
  * 
- * @description
  * 默认行为：
  * - 如果没有指定 `filterTarget`，则使用默认的目标过滤逻辑（`lib.filter.all`）。
  * - 如果没有指定 `selectTarget`，则默认为 `[1, 1]`。
@@ -436,7 +470,6 @@ player.chooseCard()       // 选择手牌
  * - `nosource` 参数：指定是否无来源玩家。
  * - `string` 类型参数：指定提示信息。
  * 
- * @description
  * 默认行为：
  * - 如果没有指定 `filterCard`，则使用默认的卡牌过滤逻辑（`lib.filter.all`）。
  * - 如果没有指定 `selectCard`，则默认为 `[1, 1]`。
@@ -453,7 +486,6 @@ player.chooseToUse() // 选择去使用
  * 
  * @param {object} choose - 配置对象，用于指定选择卡牌和目标的行为。
  * 
- * @description
  * 配置对象支持的属性：
  * - `filterCard`：卡牌过滤逻辑，可以是函数或对象。如果未指定，则使用默认的卡牌过滤逻辑（`lib.filter.all`）。
  * - `filterTarget`：目标过滤逻辑，可以是函数或对象。如果未指定，则使用默认的目标过滤逻辑（`lib.filter.all`）。
@@ -482,7 +514,6 @@ player.chooseCardTarget(choose)
  *   - 第二个 `function` 参数：指定按钮过滤逻辑。
  * - `array` 类型参数：指定用于创建对话框的配置。
  * 
- * @description
  * 默认行为：
  * - 如果没有指定 `forced`，则默认为 `false`。
  * - 如果没有指定 `filterButton`，则使用默认的按钮过滤逻辑。
@@ -492,6 +523,20 @@ player.chooseCardTarget(choose)
  */
 player.chooseButton()
 player.chooseControl()    // 选择选项
+/**
+ * 选择废除一个未废除的装备栏
+ * 
+ * @description
+ * 该方法支持多种参数类型，用于配置选择行为：
+ * - `boolean` 类型参数：是否同时废除两个坐骑栏。
+ * - `player` 类型参数：指定目标角色。
+ * - `select` 类型参数：指定选择按钮的配置。
+ * - `number` 类型参数：指定选择按钮的范围。
+ */
+player.chooseToDisable()
+player.chooseToEnable()   // 选择恢复一个废除的装备栏
+player.chooseToPSS()      // 选择一名角色进行猜拳
+player.chooseToGuanxing() // 执行一次卜算
 ```
 
 ### 1.7 动画效果
@@ -505,6 +550,7 @@ player.$recover()                // 回复动画
 player.$skill(name)              // 技能动画
 player.$fire()                   // 火焰动画  
 player.$thunder()                // 雷电动画
+player.$throwEmotion(target,'egg') // 投掷动画
 ```
 
 ## 2. 卡牌(Card)相关API
@@ -516,6 +562,10 @@ card.suit           // 花色
 card.number         // 点数
 card.nature         // 属性
 card.type          // 类型(basic/trick/equip)
+card.extraDamage    // 额外伤害
+card.baseDamage    // 基础伤害
+card.directHit    // 强中目标
+card.effectCount  // 执行次数
 ```
 
 ### 2.2 状态判断
@@ -627,6 +677,10 @@ game.swapControl()     // 交换控制权
 game.pause()           // 暂停游戏
 game.resume()          // 恢复游戏
 game.over(result)      // 游戏结束
+game.cardsDiscard()    // 将cards移动到弃牌区
+game.cardsGotoSpecial() // 将cards移动到特殊区
+game.createCard()     // 创建卡牌（一次性）
+game.createCard2()    // 创建卡牌
 ```
 
 ### 5.3 联机相关
@@ -637,8 +691,20 @@ game.syncState()       // 同步状态
 game.waitForPlayer()   // 等待玩家
 ```
 
-## 6. 窗口(UI)相关API
-### 6.1 对话框（Dialog）
+## 6、读取（Get）相关API
+### 6.1 卡牌相关
+```javascript
+get.Cards(num,boolean) // 返回牌堆顶的牌
+get.bottomCards(num,boolean) // 返回牌堆底的牌
+get.isLuckyStar()      // 是否开启幸运星模式
+get.effect()          // 返回收益
+get.order()          // 返回优先级
+get.value()          // 返回价值
+get.is.yingbian()    // 是否能应变
+```
+
+## 7. 窗口(UI)相关API
+### 7.1 对话框（Dialog）
 ```javascript
 /**
  * 创建游戏内对话框组件，支持：
