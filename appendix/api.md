@@ -648,7 +648,7 @@ game.waitForPlayer()   // 等待玩家
  * @param {Array} content - 内容定义数组，结构为：
  *   [
  *     contentData,   // 内容数据（类型取决于contentType）
- *     contentType    // 内容类型标识符（"vcard"/"character"/"textbuttons"等）
+ *     contentType    // 内容类型标识符（"vcard"/"character"/"textbutton"等）
  *   ]
  * @param {...(string|boolean)} options - 配置选项：
  *   - "hidden"        : 创建后不自动打开（需手动调用open()）
