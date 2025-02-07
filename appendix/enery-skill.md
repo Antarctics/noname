@@ -31,12 +31,12 @@
 * @param {number} number - 修改数值，支持正负。
 * @param {string} reason - 修改原因，不填则采用事件名。
 * 
-	game.changeNp(): 充能修改
-	game.changeMaxNp(): 充能上限修改
+	game.changeNp(): 增加/减少充能
+	game.changeMaxNp(): 增加/减少充能上限
 	
 数据获取：
 player.zmld.Np: 当前充能
-player.zmld.Max: 充能最大值
+player.zmld.Max: 充能上限
 player.zmld.History: 充能历史
 player.zmld.Gained: 累计获得
 player.zmld.Lost: 累计失去
