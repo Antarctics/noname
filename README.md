@@ -40,6 +40,8 @@
 - [A. API参考](./appendix/api.md)
 - [B. 常见问题](./appendix/faq.md)
 - [C. 共享手牌技能示例](./appendix/share-skill.md)
+- [D. 充能条技能示例](./appendix/enery-skill.md)
+- [无名杀GitHub仓库](https://github.com/libnoname/noname)
 
 ## 如何使用本教程
 
@@ -59,6 +61,5 @@
 
 - 联系我？
   - Q:1337515813
-- [无名杀GitHub仓库](https://github.com/libccy/noname)
 
 让我们开始无名杀扩展开发的学习之旅吧！ 
