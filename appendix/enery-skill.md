@@ -244,9 +244,6 @@ lib.skill._zmld_np = {
 	silent: true,
 	fixed: true,
 	superCharlotte: true,
-	filter: function (event, player, name) {
-		return player.name in lib.characterPack['综漫乱斗'];
-	},
 	create(player) {
 		game.broadcastAll(function (player) {
 			let double = player.classList.contains('fullskin2') && lib.config.layout !== 'long2';
