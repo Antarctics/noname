@@ -1,11 +1,17 @@
 # 附录D：充能条技能示例
 
 ## 1. 效果展示
-![描述丰富](.\Images\enery1.png)
-![根据背景变换颜色](.\Images\enery2.png)
-![支持UI显示](.\Images\enery3.png)
-![支持多种颜色](.\Images\enery4.png)
-![支持标记展示](.\Images\enery5.png)
+- 描述完善
+- 名称、颜色均可自定义
+- 支持UI、标记两种模式
+- 支持个别角色关闭
+- 支持上限修改、获取方式修改
+
+![描述丰富](.\Images\enery1.png =455x)
+![根据背景变换颜色](.\Images\enery2.png =455x)
+![支持UI显示](.\Images\enery3.png =455x)
+![支持多种颜色](.\Images\enery4.png =455x)
+![支持标记展示](.\Images\enery5.png =455x)
 ## 2. 技能代码
 
 - 此代码仅提供使用方法注释，对于实现方式不提供注释
