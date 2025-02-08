@@ -315,14 +315,14 @@ lib.skill._zmld_np = {
 
 			const isMobile = lib.device == 'android' || lib.device == 'ios';
 			const heightMultiplier = isMobile ? 0.15 : 0.1;
-			const topOffset = lib.config.extension_综漫乱斗_zmld_ui_top ? lib.config.extension_综漫乱斗_zmld_ui_top : isMobile ? 0.2 : 0.15;
+			const topOffset = lib.config.extension_综漫乱斗_zmld_ui_top != 0 ? lib.config.extension_综漫乱斗_zmld_ui_top : isMobile ? 0.2 : 0.15;
 
 			bar.style.cssText = `
 								z-index: 3;
 								width: ${w * 1.05}px;
 								height: ${w * heightMultiplier}px;
 								position: absolute;
-								top: -${w * topOffset}px;
+								top: ${w * -topOffset}px;
 								border: 2px solid rgba(0, 0, 0, 0.9);
 								border-radius: ${w * 0.05}px;
 								background: rgba(0, 0, 0, 0.6);
