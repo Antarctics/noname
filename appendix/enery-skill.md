@@ -6,24 +6,77 @@
 - 支持UI、标记两种模式
 - 支持个别角色关闭
 - 支持上限修改、获取方式修改
+<details>
+<summary>图片展示</summary>
 
-![描述丰富](Images/enery1.png)
-![根据背景变换颜色](Images/enery2.png)
 ![支持UI显示](Images/enery3.png)
 ![支持多种颜色](Images/enery4.png)
 ![支持标记展示](Images/enery5.png)
-## 2. 技能代码
+![描述丰富](Images/enery1.png)
+![根据背景变换颜色](Images/enery2.png)
+
+</details>
+
+## 2. 使用示例
+举个例子：
+想要实现技能效果：```当你受到伤害后，获得5点怒气。你无法通过除此以外的效果获得怒气。```
+
+那就创建一个技能，技能效果为受伤时触发``` source: "damageEnd" ```
+初始化```player.zmld```，然后在效果中使用```game.changeNp()```来获取能量即可！
+示例：
+```javascript
+nuqi: {
+    trigger: {
+        player: "damageEnd"
+    },
+    forced: true,
+    init(player, skill) {
+        player.zmld = {
+            Skip: ["gameStart", "useCardBegin", "gainBegin", "phaseBeginStart", "damageBegin"], // 跳过 游戏开始时、回合开始时、使用牌时、获得牌时、造成伤害、受到伤害时的能量回复
+            Name: "怒气条", // 充能条名称为
+            Color: "#DC143C", // 颜色为：猩红色，支持渐变色
+            Max: 15, // 充能条上限
+            Np: 2, // 充能起始值
+        }
+    },
+    content: function () {
+        "step 0"
+        game.changeNp(5) // 获得五点充能，获取历史显示为“因【怒气】：+5”，可以自定义原因
+        "step 1"
+        if (player.zmld.Np >= player.zmld.Max) {
+            game.changeNp(-10, "怒火攻心") // 怒气值不小于上限时，扣除10点充能
+            game.changeNp(-5, "怒火焚天", trigger.source) // 扣除攻击者5点能量
+        }
+    }
+}
+```
+### 图片：
+#### 初始能量条：
+![能量](./Images/example1.png)
+#### 历史记录：
+![能量](./Images/example2.png)
+#### 对其他人能量条无变化：
+![能量](./Images/example3.png)
+#### 对其他人能量条修改：
+![能量](./Images/example4.png)
+#### 支持渐变色：
+```javascript
+Color: "linear-gradient(90deg, #c01c28 0%, #ff7800 50%, #ffb380 100%, #c01c28 200%)"
+```
+![能量](./Images/example5.png)
+
+
+## 3. 技能代码
 
 - 此代码仅提供使用方法注释，对于实现方式不提供注释
 
 ```javascript
 /* ================================== 充能实现 ==============================
-* 此代码功能较为完善，可直接使用，无需修改
-* 若需修改，请保留现有注释，便于他人使用！
 * 问题反馈：Q 1337515813
-* （可选）分别修改：historyLimit、event.style函数。
-* 其中，historyLimit为历史记录长度，为0时不显示，默认为10
-* event.style为能量显示类型，若为1，则以UI形式显示，若为2，则以标记形式显示，默认为1
+* 请分别修改：historyLimit、event.style函数。
+* 其中，historyLimit为历史记录长度，为0时不显示。
+* event.style为能量显示类型，若为1，则以UI形式显示，若为2，则以标记形式显示。
+* 若仅需部分角色使用，请为lib.skill._zmld_np添加filter
 * 
 支持参数：
 * 修改玩家充能
@@ -31,12 +84,12 @@
 * @param {number} number - 修改数值，支持正负。
 * @param {string} reason - 修改原因，不填则采用事件名。
 * 
-	game.changeNp(): 增加/减少充能
-	game.changeMaxNp(): 增加/减少充能上限
+	game.changeNp(): 充能修改
+	game.changeMaxNp(): 充能上限修改
 	
 数据获取：
 player.zmld.Np: 当前充能
-player.zmld.Max: 充能上限
+player.zmld.Max: 充能最大值
 player.zmld.History: 充能历史
 player.zmld.Gained: 累计获得
 player.zmld.Lost: 累计失去
@@ -84,7 +137,7 @@ player.zmld.Skip:[]
 game.NpContent = function (player) {
 	if (player == undefined) player = _status.event.player;
 	let historyHtml = '';
-	let historyLimit = lib.config?.extension_综乱斗_zmld_np_history || 10;
+	let historyLimit = lib.config?.extension_综漫乱斗_zmld_np_history || 10;
 	if (historyLimit > 0) {
 		let history = player.zmld?.History || [];
 		if (history.length > 0) {
@@ -130,10 +183,14 @@ game.changeNp = function () {
 		)
 		if (typeof match == 'function') {
 			if (match.call(_status.event.getParent(3))) {
+				get.event().trigger('np_change');
 				return false
 			}
 		}
-		else if (typeof match == 'string') return false;
+		else if (typeof match == 'string') {
+			get.event().trigger('np_change');
+			return false
+		};
 	}
 	const currentNp = player.zmld.Np || 0;
 	const maxNp = player.zmld.Max || 100;
@@ -143,7 +200,7 @@ game.changeNp = function () {
 
 	if (!reason) {
 		let eventName = get.translation(_status.event.name || '未知来源');
-		reason = `${eventName}`;
+		reason = `因【${eventName}】`;
 	}
 
 	game.broadcastAll(function (player, change, reason, newNp) {
@@ -254,9 +311,10 @@ lib.skill._zmld_np = {
 
 			const isMobile = lib.device == 'android' || lib.device == 'ios';
 			const heightMultiplier = isMobile ? 0.15 : 0.1;
-			const topOffset = isMobile ? 0.2 : 0.15;
+			const topOffset = lib.config.extension_综漫乱斗_zmld_ui_top ? lib.config.extension_综漫乱斗_zmld_ui_top : isMobile ? 0.2 : 0.15;
 
 			bar.style.cssText = `
+								z-index: 3;
 								width: ${w * 1.05}px;
 								height: ${w * heightMultiplier}px;
 								position: absolute;
@@ -406,7 +464,7 @@ lib.skill._zmld_np = {
 								'linear-gradient(90deg, #26a269 0%, #33d17a 50%, #8ff0a4 100%, #26a269 200%)' :
 								percentage <= 75 ?
 									'linear-gradient(90deg, #e66100 0%, #ffa348 50%, #ffbe6f 100%, #e66100 200%)' :
-									'linear-gradient(90deg, #c01c28 0%, ${lib.config.menu_style == "wood" ?  "#CC6600":"#ff7800"} 50%, #ffb380 100%, #c01c28 200%)'}`;
+									'linear-gradient(90deg, #c01c28 0%, #ff7800 50%, #ffb380 100%, #c01c28 200%)'}`;
 						fill.style.background = gradient;
 						fill.style.boxShadow = `0 0 15px ${percentage <= 25 ? '#3584e4cc' :
 							percentage <= 50 ? '#33d17acc' :
