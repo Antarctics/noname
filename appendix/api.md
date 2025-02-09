@@ -654,9 +654,7 @@ event.finish()          // 结束事件
 
 // 事件等待
 game.delay()            // 延迟
-game.delayx()           // 延迟并等待动画
-game.asyncDraw()        // 异步摸牌
-game.asyncDiscardPile() // 异步弃牌
+game.delayx()           // 根据动画速度延迟
 ```
 
 ## 5. 游戏(Game)相关API
@@ -694,7 +692,7 @@ game.waitForPlayer()   // 等待玩家
 ## 6、读取（Get）相关API
 ### 6.1 卡牌相关
 ```javascript
-get.Cards(num,boolean) // 返回牌堆顶的牌
+get.cards(num,boolean) // 返回牌堆顶的牌
 get.bottomCards(num,boolean) // 返回牌堆底的牌
 get.isLuckyStar()      // 是否开启幸运星模式
 get.effect()          // 返回收益

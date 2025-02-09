@@ -133,7 +133,7 @@
             filter(event, player) {
                 return player.getCards("h").some(card => !card.hasGaintag('共享'))
             },
-            content: async () => {
+            content: async (event, trigger, player) => {
                 let cards = player.getCards("h").filter(card => !card.hasGaintag('共享'))
                 for (let card of cards) {
                     if (!_status.gongxiang.cards.some(g =>
@@ -159,7 +159,7 @@
                 );
                 return less
             },
-            content: async () => {
+            content: async (event, trigger, player) => {
                 var cards = player.getCards('h')
                 let less = _status.gongxiang.cards.filter(g =>
                     !cards.some(card =>
