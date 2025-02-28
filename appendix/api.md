@@ -53,7 +53,33 @@ player.countDisabled()     // 废除数量
 player.disableJudge()     // 废除判定区
 player.enableJudge()      // 恢复判定区
 
-player.getHistory()
+/**
+ * 快速获取一名角色当前轮次/倒数第X轮次的历史
+ * @param {(event:GameEventPromise)=>boolean} filter 筛选条件，不填写默认为lib.filter.all
+ * @param {number} [num] 获取倒数第num轮的历史，默认为0，表示当前轮
+ * @param {boolean} [keep] 若为true,则获取倒数第num轮到现在的所有历史
+ * @param {GameEventPromise} last 代表最后一个事件，获取该事件之前的历史
+ */
+player.getRoundHistory(key, filter, num, keep, last)
+/**
+ * 返回角色本回合历史
+ * 
+ * @param { (event: GameEventPromise) => boolean } [filter] 过滤条件
+ * @param { GameEventPromise } [last] 若有改参数，则该参数事件之后的将被排除掉
+ */
+player.getHistory(key, filter, last)
+/**
+ * 遍历历史
+ * @param { (event: GameEventPromise) => void } filter 遍历过程需要执行的函数
+ * @param { GameEventPromise } [last]
+ */
+player.checkHistory(key, filter, last)
+player.hasHistory(key, filter, last) // 本回合是否存在历史
+player.getLastHistory(key, filter, last) // 返回最后一回合历史
+player.checkAllHistory(key, filter, last) // 遍历全局历史
+player.hasAllHistory(key, filter, last) // 本局是否存在历史
+player.getAllHistory(key, filter, last) // 返回本局历史
+player.getAttackRange(raw) // 返回攻击距离，是否为基础值
 ```
 
 ### 1.3 技能相关
@@ -122,6 +148,12 @@ player.hasSkill(skill, arg2, arg3, arg4)
  * @param {string} skill - 要检查的主技能名称。
  */
 player.hasZhuSkill(skill)
+/**
+ * 技能使用次数
+ * 
+ * @param {string} skill - 要获取的技能名称
+ */
+player.countSkill(skill)
 ```
 
 ### 1.4 卡牌操作
@@ -226,6 +258,18 @@ player.lose()
  * 如果未指定要弃掉的牌，则直接跳过事件。
  */
 player.discard()
+/**
+ * 令玩家弃置其区域内一些能被弃置的牌
+ *
+ * @description
+ * 该方法支持多种参数类型：
+ * - `player` 类型参数：指定牌的来源玩家。
+ * - `cards` 或 `card` 类型参数：指定要弃掉的牌。
+ * - `position` 参数：指定弃置到的区域
+ * - `log` 参数：因对应Mod技能导致部分牌未被弃置时，是否显示对应技能名。默认'popup'
+ *
+ */
+player.modedDiscard()
 /**
  * 将卡牌添加到弃牌区域。
  * 
@@ -364,6 +408,7 @@ player.getLastUsed(num)
  * - `notrigger` 参数：是否禁用触发效果。
  * - `unreal` 参数：是否虚拟伤害。
  * - `nature` 或 `natures` 类型参数：指定伤害属性（如 "fire"、"poison" 等）。
+ * - `nohujia` 参数：是否无视护甲
  * 
  * 该方法会根据伤害属性（如 "poison"）和虚拟伤害标志调整触发逻辑。
  * 如果伤害值小于等于 0，则触发 "damageZero" 事件并结束。
@@ -592,6 +637,18 @@ card.isKnownBy(player)    // 是否知情
 card.copy()              // 复制卡牌
 card.discard()           // 弃置
 card.init(cardData)      // 初始化
+/**
+ * 给此牌添加特定的cardtag（如添加应变条件）
+ * 
+ * @param { string } tag
+ */
+card.addCardtag(tag)
+/** 
+ * 给此牌移除特定的cardtag（如移除应变条件）
+ * 
+ * @param { string } tag
+ */
+card.removeCardtag(tag)
 ```
 
 ## 3. 武将(Character)相关API
@@ -619,32 +676,7 @@ character.clans                // 势力标记
 
 ## 4. 事件(Event)相关API
 
-### 4.1 基础事件
-```javascript
-// 摸牌事件
-event.draw = {
-  num: 2,               // 摸牌数量
-  log: true,            // 是否记录
-  bottom: false,        // 是否从牌堆底摸牌
-  visible: false        // 是否明牌
-}
-
-// 弃牌事件
-event.discard = {
-  position: 'h',        // 弃置区域
-  cards: [],           // 弃置的牌
-  discarder: player    // 弃牌者
-}
-
-// 伤害事件
-event.damage = {
-  num: 1,              // 伤害值
-  nature: 'fire',      // 伤害属性
-  source: player       // 伤害来源
-}
-```
-
-### 4.2 事件处理
+### 4.1 事件处理
 ```javascript
 // 事件创建
 game.createEvent(name)   // 创建事件
@@ -692,13 +724,82 @@ game.waitForPlayer()   // 等待玩家
 ## 6、读取（Get）相关API
 ### 6.1 卡牌相关
 ```javascript
+/**
+ * 从指定区域获得一张牌
+ * @param { function | string | object | true } name 牌的筛选条件或名字，true为任意一张牌
+ * @param { string | boolean } [position] 筛选区域，默认牌堆+弃牌堆：
+ *
+ * cardPile: 仅牌堆；discardPile: 仅弃牌堆；filed: 牌堆+弃牌堆+场上
+ *
+ * 若为true且name为string | object类型，则在筛选区域内没有找到卡牌时创建一张name条件的牌
+ *
+ * @param { string } [start] 遍历方式。默认top
+ *
+ * top: 从牌堆/弃牌堆顶自顶向下遍历
+ * bottom: 从牌堆/弃牌堆底自底向上遍历
+ * random: 随机位置遍历
+ * @returns { Card | ChildNode | null }
+ */
+get.cardPile(name, position, start)
+/**
+ * 从牌堆获得一张牌
+ * @param { function | string | object | true } name 牌的筛选条件或名字，true为任意一张牌
+ * @param { string } [start] 遍历方式。默认top
+ *
+ * top：从牌堆顶自顶向下遍历
+ * bottom：从牌堆底自底向上遍历
+ * random: 随机位置遍历
+ * @returns { Card | ChildNode | null }
+ */
+get.cardPile2(name, start)
+/**
+ * 从弃牌堆获得一张牌
+ * @param { function | string | object | true } name 牌的筛选条件或名字，true为任意一张牌
+ * @param { string } [start] 遍历方式。默认top
+ *
+ * top：从弃牌堆顶自顶向下遍历
+ * bottom：从弃牌堆底自底向上遍历
+ * random: 随机位置遍历
+ * @returns { Card | ChildNode | null }
+ */
+get.discardPile(name, start)
+/**
+ * 返回数字在扑克牌中的表示形式
+ * @param { number } num
+ * @param { boolean } [forced] 未获取点数字母对应元素时，若此参数不为false，则返回字符串格式
+ * @returns { string }
+ */
+get.strNumber(num, forced)
+get.numString(str, forced) // 返回扑克牌中的表示形式对应的数字
 get.cards(num,boolean) // 返回牌堆顶的牌
 get.bottomCards(num,boolean) // 返回牌堆底的牌
-get.isLuckyStar()      // 是否开启幸运星模式
 get.effect()          // 返回收益
 get.order()          // 返回优先级
 get.value()          // 返回价值
 get.is.yingbian()    // 是否能应变
+```
+
+### 6.2 技能相关
+```javascript
+/**
+ * 获取一个技能或事件的某个属性的源技能
+ * 
+ * @param { string | Object } skill - 传入的技能或事件
+ * @param { string } text - 要获取的属性（不填写默认获取sourceSkill）
+ */
+get.sourceSkillFor(skill, text)
+```
+
+### 6.3 其他
+```javascript
+get.isLuckyStar()      // 是否开启幸运星模式
+/**
+ * 返回指定角色的所有id
+ *
+ * @param {Player} player
+ */
+get.nameList()
+get.player() // 返回当前事件角色
 ```
 
 ## 7. 窗口(UI)相关API
