@@ -40,6 +40,7 @@
 - 推荐使用驼峰命名法（大驼峰：每个单词首字母大写，例如 FileType、DataArr；小驼峰：第一个单词首字母小写后面的单词首字母大写，例如 fileType、dataArr）。
 #### 定义变量
 在 JavaScript 中，通常使用`var`、`let`、`const`关键字定义变量：
+
 ```javascript
 // 声明变量
 var name;        // 创建全局变量 name
@@ -51,6 +52,7 @@ var name = "Zhang",
     sex = "male"                                  // 创建并赋值全局变量 name、sex
 let user = 'John', age = 25, message = 'Hello';   // 创建并赋值局部变量 user、age、message
 ```
+
 需要注意的是，在大多数编程语言中，`=`的意义均为赋值，而非`等于`！
 
 若想判断两个数据是否相等，需要使用`==`。
