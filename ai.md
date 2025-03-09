@@ -411,7 +411,7 @@ ai: {
                     if(target.hasSkillTag('threaten')) return 8; // 威胁目标优先
                     return 6;
                 }
-                return -1;
+                return 0;
                 })
                 .forResult();
         }

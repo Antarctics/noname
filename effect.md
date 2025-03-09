@@ -226,7 +226,7 @@ async content(event, trigger, player){
             // 进行判定
             let judge = await event.target.judge(function(card){
                 if(get.color(card) == 'red') return 1;
-                return -1;
+                return 0;
             });
             // 根据判定结果执行效果
             if(result.bool){

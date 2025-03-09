@@ -66,7 +66,7 @@ card: {
     },
     judge(card){    // 判定函数
         if(get.color(card) == 'red') return 1;
-        return -1;
+        return 0;
     }
 }
 ```
