@@ -408,6 +408,7 @@ async content(event, trigger, player){
 1. 创建一个触发技能：
    - 回合开始时触发
    - 可以选择摸牌或回复体力
+
 <details>
 <summary>参考答案 | 🟩 Easy</summary>
 
@@ -438,6 +439,7 @@ async content(event, trigger, player){
    - 出牌阶段限一次
    - 弃置一张牌并指定一名角色
    - 目标角色受到1点伤害
+
 <details>
 <summary>参考答案 | 🟩 Easy</summary>
 
@@ -475,6 +477,7 @@ async content(event, trigger, player){
    - 包含触发和主动两部分
    - 使用技能标记系统
    - 实现技能联动
+
 <details>
 <summary>参考答案 | 🟨 Medium</summary>
 

@@ -219,5 +219,6 @@ async content(event, trigger, player){
 } // 摸两张牌,若体力值小于3则弃置一张牌
 ```
 </details>
+
 </br>
 下一章我们将学习如何制作角色。

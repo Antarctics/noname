@@ -308,6 +308,7 @@ alert( `hello ${"name"}` ); // hello name
 // 表达式是一个变量。
 alert( `hello ${name}` ); // hello 张飞
 ```
+
 </details>
 
 2. 下面的脚本会输出什么？
@@ -323,6 +324,7 @@ x += 5
 x += 5    // 字符串"55"
 +x        // 数字5
 ```
+
 </details>
 
 3. 下面的脚本会输出什么？
@@ -338,6 +340,7 @@ switch(name) {
         return "人公将军？"
 }
 ```
+
 <details>
 <summary>参考答案 | 🟩 Easy</summary>
 
@@ -354,6 +357,8 @@ switch(name) {
 }
 // 人公将军？
 ```
+
 </details>
+
 </br>
 下一章我们将正式学习制作无名杀扩展。
