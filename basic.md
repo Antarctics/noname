@@ -286,6 +286,7 @@ switch(event.name) {
 
 ## 练习题
 1. 下面的脚本会输出什么？
+
 ```javascript
 let name = "张飞";
 
@@ -313,6 +314,7 @@ alert( `hello ${name}` ); // hello 张飞
 </details>
 
 2. 下面的脚本会输出什么？
+
 ```javascript
 let x = "5"
 x += 5
