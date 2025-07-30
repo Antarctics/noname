@@ -12,7 +12,7 @@
 "共享": {
     init(player, skill) {
         lib.translate["共享"] = "共享"
-        lib.translate["共享_info"] = "锁定技，拥有此技能的角色共享手牌，且手牌互相可见。当你处于弃牌阶段时，你无法弃置“共享”牌。“共享”牌被使用时原牌来源的角色视为弃置该牌。"
+        lib.translate["共享_info"] = "锁定技，拥有此技能的角色共享手牌，且手牌互相可见。当你处于弃牌阶段时，你无法弃置“共享”牌。"
         _status.gongxiang = _status.gongxiang || {
             cards: [],
             players: []
