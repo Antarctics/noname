@@ -139,9 +139,10 @@
                 if (event.triggername == "useCardBegin") {
                     trigger.cards = ccards
                 }
-                if (event.triggername == "addToExpansionBegin") {
+                else if (event.triggername == "addToExpansionBegin") {
                     trigger.cards = ccards
                 }
+                else if (trigger.type == "discard" || trigger.getParent(2).name == "recast" )game.cardsDiscard(ccards)
                 _status.gongxiang.cards = _status.gongxiang.cards.filter(g =>
                     !sharedCards.some(card =>
                         g.name === card.name &&
