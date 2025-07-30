@@ -119,7 +119,7 @@
                                 c.number === card.number
                             )
                         );
-                //找到真实牌与虚假牌，将虚假牌移除游戏
+                //找到真实牌，将共享牌移除游戏
                 game.players.forEach(p => {
                     const playerCards = p.getCards("h").filter(card =>
                         sharedCards.some(c =>
@@ -132,15 +132,9 @@
                         var cards = playerCards.filter(
                                 card => _status.gongxiang.cards.includes(card)
                             )
-                        var lcards = playerCards.filter(
-                                card => !_status.gongxiang.cards.includes(card)
-                            )
-                        ccards = ccards.concat(cards)
-                        p.lose(cards,ui.gongxiang)
-                        p.lose(lcards,ui.gongxiang)            
-                    } else {
-                        p.lose(playerCards, ui.gongxiang)
-                    }
+                        ccards = ccards.concat(cards)         
+                    } 
+                    p.lose(playerCards, ui.gongxiang)
                 })
                 if (event.triggername == "useCardBegin") {
                     trigger.cards = ccards
