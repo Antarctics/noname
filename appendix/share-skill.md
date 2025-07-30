@@ -52,18 +52,17 @@
         }
     },
     onremove:function(player,skill){
-        var totalcards = []
         //处理自己手中的“共享”牌
         var cards = player.getCards("h", i => {
                 return i.hasGaintag("共享");
             });
-        totalcards = totalcards.concat(cards)
         player.lose(cards,ui.gongxiang)
         game.cardsGotoSpecial(cards)
 
         //处理其他人手中的“共享牌”
         const playerCards = player.getCards("h").filter(c => _status.gongxiang.cards.includes(c));
         game.players.forEach(p =>{
+            if(p == player)return;
             var ccards = p.getCards("h").filter(c =>
                 playerCards.some(cc => 
                     c.name === cc.name &&
@@ -71,14 +70,13 @@
                     c.number === cc.number
                 )
             )
-            totalcards = totalcards.concat(ccards)
             p.lose(ccards,ui.gongxiang)
             game.cardsGotoSpecial(ccards)
         })
 
         //移除标记
         _status.gongxiang.cards = _status.gongxiang.cards.filter(g =>
-                    !totalcards.some(card =>
+                    !playerCards.some(card =>
                         g.name === card.name &&
                         g.suit === card.suit &&
                         g.number === card.number
