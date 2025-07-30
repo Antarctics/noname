@@ -57,7 +57,6 @@
                 return i.hasGaintag("共享");
             });
         player.lose(cards,ui.gongxiang)
-        game.cardsGotoSpecial(cards)
 
         //处理其他人手中的“共享牌”
         const playerCards = player.getCards("h").filter(c => _status.gongxiang.cards.includes(c));
@@ -71,7 +70,6 @@
                 )
             )
             p.lose(ccards,ui.gongxiang)
-            game.cardsGotoSpecial(ccards)
         })
 
         //移除标记
@@ -139,16 +137,13 @@
                             )
                         ccards = ccards.concat(cards)
                         p.lose(cards,ui.gongxiang)
-                        p.lose(lcards,ui.gongxiang)
-                        game.cardsGotoSpecial(cards) 
-                        game.cardsGotoSpecial(lcards)             
+                        p.lose(lcards,ui.gongxiang)            
                     } else {
                         p.lose(playerCards, ui.gongxiang)
                     }
                 })
                 if (event.triggername == "useCardBegin") {
                     trigger.cards = ccards
-                    player.useCard(ccards, trigger.targets)
                 }
                 if (event.triggername == "addToExpansionBegin") {
                     trigger.cards = ccards
