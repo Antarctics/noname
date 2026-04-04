@@ -24,8 +24,6 @@
             player.$draw();
         }, player);
         
-        // 延迟等待动画
-        game.delayx();
     }
 }
 ```

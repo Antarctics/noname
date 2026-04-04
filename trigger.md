@@ -19,6 +19,7 @@
    "${EventWithTrigger}End"                    // 事件结束时
    "${EventWithTrigger}After"                  // 事件发生后
    "${EventWithTrigger}Skipped"                // 事件被跳过时
+   "${EventWithTrigger}Canceled"               // 事件被取消时
     // 可细分事件
    "${_CardName}"                            // 卡牌使用时
    "${_CardName}Cancel"                      // 卡牌取消时

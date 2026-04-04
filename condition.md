@@ -437,4 +437,3 @@ filter(event, player){
 ```
 </details>
 </br>
-下一节我们将学习技能动画效果。 

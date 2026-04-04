@@ -1,4 +1,4 @@
-# 第三章 角色制作
+# 第三章 角色创建
 
 ## 1. 角色定义格式
 
@@ -22,7 +22,7 @@ translate: {
 ```
 
 ### 数组形式（传统）
-- 不再推荐使用数组形式
+- 不再推荐使用的数组形式
 ```javascript
 character: {
     "id": ["male", "shu", 4/4, ["skill1", "skill2"], [
@@ -92,21 +92,24 @@ translate: {
     - `doubleGroup`：字符串数组。多势力武将。
     - `isAiForbidden`：布尔值。是否仅点将可用，默认为false
     - `extraModeData`：数组。特殊模式下读取的信息。 
-    - `clans`：字符串数组。对应的所有宗族
+    - `clans`：字符串数组。对应的宗族
     - `img`：字符串。武将对应的图片
-    - `initFilters`：字符串数组。武将无法享受的红利（地主、主公加成）
+    - `initFilters`：字符串数组。武将无法享受的红利（`noZhuHp`、`noZhuSkill`）
     - `tempname`：字符串数组。武将的临时名称
     - 更多信息请查看`noname\library\element\character.js`
 
 ## 2. 自定义势力<a id="自定义势力"></a>
 ```javascript
-// 在扩展的precontent中添加
+/**
+ * 旧方法（不推荐）
+ * 在扩展的precontent中添加 
+ */ 
 lib.group.push('my_group'); // 添加势力
 lib.translate.my_group = '自定义'; // 势力翻译
-lib.translate.my_groupColor="#FFFF00", // 文字颜色（疑似失效）
 lib.groupnature.my_group = 'metal'; // 描边颜色
 
-/** 推荐方法
+/** 
+ * 推荐方法
  * @param {string} id: 势力ID
  * @param {string} short: 势力名称，单字
  * @param {string} name: 势力全名，使用 get.translation(id2)可以获取，不填默认为short
@@ -125,16 +128,14 @@ game.addGroup(id,short,name,config)
 // 键: key       -  紫色
 ```
 
-## 4. 角色前缀
+## 3. 角色前缀
 ```javascript
-return {
 translates: {
     sheXXX: "蛇年XXX",
     sheXXX_prefix: "蛇年" // 蛇年作为前缀，角色名为 XXX ，可参考 界XX、神XX、手杀XXX等
-};
-
+}
 // 修改前缀显示样式
-// precontent中填写，支持color,nature,showName,getSpan
+// 支持color,nature,showName,getSpan
 lib.namePrefix.set("蛇年",{showName: "🐍"})
 // 或者
 lib.namePrefix.set("蛇年",{getSpan: () => {
@@ -143,38 +144,144 @@ lib.namePrefix.set("蛇年",{getSpan: () => {
     span.textContent= "🐍";
     return span.outerHTML
     }})
+```
+
+## 4. 角色筛选
+
+有时候我们需要限制武将在特定模式下才可使用，或者在某些模式下无法获得主公加成。
+
+```javascript
+// 判断武将是否可在当前模式中使用
+characterFilter: {
+    /**
+     * @param {string} mode - 游戏模式标识，例如 "identity"（身份模式）、"guozhan"（国战模式）等
+     */
+    guanyu(mode) => mode != "identity"
+}
+
+// 判断武将是否可在当前模式中获得加成
+characterInitFilters: {
+	/**
+	 * @param {string} tag - 标签，例如 "noZhuSkill" 表示禁止主公技相关加成
+	 * 
+	 * 说明：当标签为 "noZhuSkill" 时，仅在以下两种情况下允许加成：
+	 *       1. 当前模式为斗地主模式（doudizhu）
+	 *       2. 当前子模式为 normal
+	 *       否则返回 false，禁止加成（即斗地主 normal 子模式以外的情况都不给加成）
+	 */
+	zhaoyun(tag) {
+		if (tag == "noZhuSkill" && (get.mode() != "doudizhu" || _status.mode != "normal")) {
+			return false;
+		}
+	}
 }
 ```
 
-## 练习题
+## 5. 换音换肤
 
-1. 创建一个基本武将：
-    -  设置基本属性
-    -  添加技能`wusheng`、`longdan`
-    -  设置合适的描述
+无名杀允许同一武将拥有多种外观和音效方案，且拥有两种效果截然不同的方式：
 
-<details>
-<summary>参考答案 | 🟩 Easy</summary>
+### 方法一
+这种方式适合在游戏过程中，通过技能效果临时改变武将的外观，例如觉醒、变身等场景，具有以下效果：
+ - 通过技能效果对皮肤进行切换
+ - 无法主动切换皮肤
+ - 可同步切换音效
+
+第一步、创建皮肤配置
+首先需要在武将定义中添加皮肤配置：
 
 ```javascript
-// 在扩展中添加武将
-character: {
-    character: {
-        "ex_guanyu": {
-            sex: "male",
-            group: "shu",
-            hp: 4,
-            skills: ["wusheng", "longdan"]
-            img: "extension/新关羽/ex_guanyu.png"
-            dieAudios: "ext:新关羽/audio/die/ex_guanyu.mp3"
-        }
-    },
-    translate: {
-        "ex_guanyu": "新关羽", // 武将翻译
-        "ex_guanyu_prefix": "新"
+/**
+ * 武将皮肤/阵亡语音替换
+ * key 为武将名称，value 为皮肤配置数组
+ * 
+ * 数组元素格式：[skinName, [skinPath/ID,dieAudio]]
+ * 示例：
+ * - ["guanyu", ["wuguanyu", "die:wuguanyu"]]        // 内部ID
+ * - ["guanyu", ["ext:我的扩展/skin/wuguanyu", "die:ext:我的扩展/audio/die/wuguanyu"]]  // 路径
+ */
+characterSubstitute: {
+    guanyu:[
+        ["wu_guanyu",["wuguanyu","die:wuguanyu"]]
+    ]
+}
+```
+
+第二步、切换皮肤
+通过技能效果来进行皮肤切换：
+
+```javascript
+/**
+ * 切换角色皮肤
+ * @param {string|Object} map - 切换规则
+ *   - 若为string：视为技能名，将所有持有该技能的角色皮肤替换为 skinName
+ *   - 若为Object：精确指定切换对象，包含以下字段：
+ *     @prop {string} skill - 触发切换的技能名
+ *     @prop {string} characterName - 武将ID
+ *     @prop {string} characterSkinName - 目标皮肤ID/路径
+ *     @prop {string} [source] - 来源武将（国战模式生效）
+ * @param {string} skinName - 目标皮肤ID/路径
+ * 
+ * @example
+ * // 将所有持有"juexing_skill"技能的角色皮肤切换为武关羽
+ * player.changeSkin("juexing_skill", "wu_guanyu");
+ * 
+ * @example
+ * // 精确切换指定角色皮肤
+ * player.changeSkin({
+ *     characterName: "guanyu",
+ * }, "wu_guanyu");
+ */
+```
+
+第三步、独立音效
+
+不同皮肤可以拥有不同的音效，其中阵亡音效由皮肤配置进行设置，技能音效需要对技能进行单独改动。具体用法请查看[角色专属配音](audio.md#角色专属配音)。
+
+### 方法二
+这种方式适合玩家主动选择的皮肤，不影响游戏性，纯视觉效果。具有以下效果：
+ - 随时可切换
+ - 仅对玩家生效
+ - 无实际修改
+
+在扩展文件中按以下格式创建文件夹，并将皮肤文件置入即可自动识别。
+
+```文件结构
+扩展文件/
+├── image/
+│   └── skin/
+│       └── guanyu/           # 武将ID文件夹
+│           └── skin.png      # 皮肤文件
+```
+
+## 6. 其他配置
+
+### 6.1 角色头衔
+
+```javascript
+characterTitle: {
+    "ex_guanyu": "汉寿亭侯",
+    "ex_zhangfei": "西乡侯"
+}
+```
+
+### 6.2 角色切换
+
+```javascript
+characterReplace: {
+    guanyu: ["jie_guanyu","wu_guanyu"] // 于选择角色界面可在“界关羽”与“武关羽”之间切换。
+}
+```
+
+### 6.3 角色分包
+
+```javascript
+characterSort: {
+    // 扩展内部名
+    ext_name: {
+        yijiang: ["guanyu","zhaoyun"] // 将“关羽”、“赵云”加入“yijiang”包中
     }
 }
 ```
-</details>
-</br>
+
 下一节我们将学习如何设计和实现技能。

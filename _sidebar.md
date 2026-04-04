@@ -1,22 +1,19 @@
 - [第一章：基础知识 | 🟩 Easy](basic.md)
 - [第二章：扩展结构 | 🟩 Easy](structure.md)
-- [第三章：角色制作 | 🟩 Easy](character.md)
+- [第三章：角色创建 | 🟩 Easy](character.md)
 - 第四章：技能开发 | 🟨 Medium
   - [4.1 技能系统](skill.md)
   - [4.2 触发时机](trigger.md)
   - [4.3 技能效果](effect.md)
   - [4.4 技能标记](mark.md)
   - [4.5 技能条件](condition.md)
-  - [4.6 技能动画](animation.md)
-  - [4.7 技能类型概述](skill-types.md)
-
+  - [4.6 技能类型概述](skill-types.md)
 - [第五章：卡牌开发 | 🟩 Easy](card.md)
 - 第六章：进阶开发 | 🟥 Hard
   - [6.1 AI设计](ai.md)
   - [6.2 联机适配](online.md)
   - [6.3 配音系统](audio.md)
-  - [6.4 皮肤系统](skin.md)
-  - [6.5 代码规范](code-standard.md)
+  - [6.4 代码规范](code-standard.md)
 - 附录
   - [A. API参考](appendix/api.md)
   - [B. 共享手牌技能示例](appendix/share-skill.md)

@@ -1,4 +1,4 @@
-# 5.3 音频与配音
+# 6.3 音频与配音
 
 ## 1. 音频系统概述
 
@@ -32,7 +32,7 @@ skill: {
   - `my_skill1.mp3`
   - `my_skill2.mp3`
 
-### 2.3 角色专属配音
+### 2.3 角色专属配音<a id="角色专属配音"></a>
 ```javascript
 "my_skill": {
     audio: 2,
@@ -41,7 +41,8 @@ skill: {
     // 或
     audioname2: {
         zhaoyun: "ext:扩展名/audio/skill:1",  // 赵云使用扩展配音
-        machao: true                     // 马超使用默认配音
+        machao: true,                     // 马超使用默认配音
+        wu_guanyu: ["wusheng",1]          // 武关羽皮肤使用【武圣】的第一条配音。
     }
 }
 ```

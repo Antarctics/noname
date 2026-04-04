@@ -58,19 +58,19 @@
      */
     audio: 2,
     /**
-     * 触发时机，类似被动技能，不能与 主动使用 同时存在。
+     * 触发时机，类似被动技能
      * @param {object} 具体触发时机，详细参数请查看 触发时机 章节
      */
     trigger: {},
     /**
-     * 主动使用，主动技，不能与 触发时机 同时存在
+     * 主动使用，主动技
      * @param {string | string[]} 使用时机
      * @description
      * 该方法所支持的参数类型：
      * - `chooseCard` 参数：选牌时可用
      * - `chooseToRespond` 参数：打出牌时可用
      * - `chooseToUse` 参数：使用牌时可用
-     * - `phaseUse` 参数：出牌时可用
+     * - `phaseUse` 参数：出牌阶段时可用
      */
     enable: "",
     /**
@@ -78,7 +78,7 @@
 	 * @param skill 当前技能
 	 * @param player 持有角色
      */
-    usable: ((skill: string, player: Player) => number) | number,
+    usable: ((skill, player) => number) | number,
     /**
      * 每轮使用次数
 	 * @param {number} num 使用次数
@@ -103,7 +103,7 @@
      */
     forced: true,
     /**
-     * 是否锁定
+     * 是否为锁定技
 	 * @param {boolean} 锁定
      * @description
      * 能否被“非锁定技失效”封印
@@ -123,11 +123,20 @@
      * 在技能下面显示的对应技能的描述
      */
     derivation: [],
+    forceaudio: true,           // 是否强制播放配音
     charlotte: true,            // 是否为锁定技
     vanish: true,               // 一次性技能，使用resetSkills重置技能时直接移除此技能。
     popup: false,               // 发动技能是否记录
     nopop: true,                // 是否显示技能描述
     direct: true,               // 是否强制发动技能且无记录
+    firstDo: true,              // 是否优先执行技能
+    laseDo: true,               // 是否最后执行技能
+    forceDie: true,             // 死亡后能否发动技能
+    global:true,                // 是否为全局技能（当你持有时，视为所有人持有）
+    unique: true,               // 是否为独有技能(不会被“化身”获取）
+    forbid: "guozhan",          // 在对应模式下禁用此技能
+    mode: "guozhan",            // 仅在对应模式下启用此技能
+    available: (mode) => true,  // 当前模式下是否可用此技能
     skillAnimation: true,       // 是否播放动画
 	animationColor: "gray",     // 动画文字颜色
     sourceSkill: "XXX",         // 源技能，若存在，则当前技能实际id为"XXX_skill"
@@ -135,14 +144,20 @@
     logTarget: "target",        // 技能显示的目标
     mark: "auto",               // 是否显示标记，同时也支持布尔值。
     equipSkill: true,           // 是否为装备技能
+    inherit: "skill",           // 继承技能，技能内容会完全继承指定技能，且可在其基础上进行修改
+    name: "name",               // 技能按钮名称，默认使用翻译名
     prompt: "XXX",              // 发动技能提示
-    filterCard: {},             // 是否需要筛选卡牌
-    position: "h",               // 指定卡牌位置
-    filterTarget: (),           // 是否需要筛选目标
-    selectTarget: (),           // 需要选择的目标数
-    viewAs: {},                 // 视为使用卡牌
-    viewAsFilter: {},           // 视为使用条件
-    onuse: {},                  // 视为后执行的效果
+    filterCard: () => true,     // 【主动技中使用】是否需要筛选卡牌
+    position: "h",              // 【主动技中使用】指定卡牌位置
+    filterTarget: () => true,   // 【主动技中使用】是否需要筛选目标
+    selectTarget: () => 1,      // 【主动技中使用】需要选择的目标数
+    deadTarget: true,           // 【主动技中使用】是否可以选择已死亡的角色
+	chessForceAll: true,        // 【主动技中使用】能否在战棋/塔防模式中无视距离上限选择玩家
+	includeOut: true,           // 【主动技中使用】能否选择离场的玩家，例如调虎离山等
+    viewAs: {},                 // 【主动技中使用】视为使用卡牌
+    viewAsFilter: {},           // 【主动技中使用】视为使用条件
+    onuse: {},                  // 【主动技中使用】视为后执行的效果
+    oncancel: {},               // 【触发技中使用】取消技能时执行的效果
     onremove: {},               // 失去技能后执行的效果
     intro: {},                  // 标记内容
     check: {},                  // AI是否发动技能(被动技)

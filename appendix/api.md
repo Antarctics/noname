@@ -1,5 +1,7 @@
 # 附录A：API参考
 
+此处仅列出部分API，更多函数请查看\noname\library\element\中的相关文件。
+
 ## 1. 玩家(Player)相关API
 
 ### 1.1 基础属性

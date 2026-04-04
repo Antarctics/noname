@@ -115,118 +115,13 @@ async content(event, trigger, player){
 }
 ```
 
-## 4. 卡牌动画
 
-### 4.1 使用动画
-```javascript
-"animation_card": {
-    async content(event, trigger, player){
-        // 使用动画
-        player.$throw(card);
-        await game.delay(0.5);
-        
-        // 目标动画
-        target.$damage('fire');
-        await game.delay(0.3);
-        
-        // 获得动画
-        target.$gain(cards);
-    }
-}
-```
-
-### 4.2 特殊动画
-```javascript
-"special_animation": {
-    async content(event, trigger, player){
-        // 判定动画
-        let result = await player.judge();
-        
-        // 展示动画
-        await player.$showCards(cards);
-        
-        // 比较动画
-        await player.$compare(card1, target, card2);
-    }
-}
-```
-
-## 5. 卡牌音效
-
-### 5.1 基础音效
-```javascript
-"audio_card": {
-    audio: true,              // 使用默认音效
-    // 或
-    audio: "ext:扩展名:2",    // 使用扩展音效
-}
-```
-
-### 5.2 条件音效
-```javascript
-"condition_audio": {
-    audio(player){
-        // 根据条件返回不同音效
-        if(player.hp < 3) return "ext:扩展名:2";
-        return true;
-    }
-}
-```
-
-## 6. 进阶功能
-
-### 6.1 联动效果
-```javascript
-"link_card": {
-    init(player){
-        // 初始化
-        player.storage.link_count = 0;
-    },
-    onuse(result, player){
-        // 使用时触发
-        player.storage.link_count++;
-    },
-    async content(event, trigger, player){
-        // 根据使用次数改变效果
-        let count = player.storage.link_count;
-        await target.damage(count);
-    }
-}
-```
-
-### 6.2 特殊规则
-```javascript
-"special_rule": {
-    mod: {
-        targetEnabled(card, player, target){
-            // 目标限制
-            if(target.hp > player.hp) return false;
-        },
-        cardUsable(card, player, num){
-            // 使用次数修改
-            if(player.hp < 3) return num + 1;
-        },
-        ignoredHandcard(card, player){
-            // 手牌规则修改
-            if(card.name == 'my_card') return true;
-        }
-    }
-}
-```
-
-## 7. 注意事项
-
-1. **卡牌设计**
-   - 效果要平衡
-   - 规则要明确
-   - 避免过于复杂
 
 ## 练习
 
 1. 创建一个基本牌：
    - 设计基础效果
    - 添加使用条件
-   - 实现动画效果
 
 <details>
 <summary>参考答案 | 🟩 Easy</summary>
@@ -243,10 +138,6 @@ card: {
         },
         selectTarget: 1,              // 选择一个目标
         async content(event, trigger, player){
-            // 播放使用动画
-            player.$throw(cards);
-            game.delay(0.5);
-            
             // 造成伤害
             await target.damage('fire');
         },
@@ -267,7 +158,7 @@ translate: {
 ```
 </details>
 
-2. 创建一个装备牌：
+1. 创建一个装备牌：
    - 定义装备效果
    - 添加装备技能
    - 设置距离修正
@@ -374,4 +265,3 @@ translate: {
 ```
 </details>
 </br>
-下一章我们将学习如何开发游戏模式。 
