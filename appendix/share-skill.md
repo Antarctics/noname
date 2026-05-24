@@ -51,10 +51,42 @@
             return false
         }
     },
-    group: ["共享_lose", "共享_gain", "共享_update"],
+    onremove:function(player,skill){
+        //处理自己手中的“共享”牌
+        var cards = player.getCards("h", i => {
+                return i.hasGaintag("共享");
+            });
+        player.lose(cards,ui.gongxiang)
+
+        //处理其他人手中的“共享牌”
+        const playerCards = player.getCards("h").filter(c => _status.gongxiang.cards.includes(c));
+        game.players.forEach(p =>{
+            if(p == player)return;
+            var ccards = p.getCards("h").filter(c =>
+                playerCards.some(cc => 
+                    c.name === cc.name &&
+                    c.suit === cc.suit &&
+                    c.number === cc.number
+                )
+            )
+            p.lose(ccards,ui.gongxiang)
+        })
+
+        //移除标记
+        _status.gongxiang.cards = _status.gongxiang.cards.filter(g =>
+                    !playerCards.some(card =>
+                        g.name === card.name &&
+                        g.suit === card.suit &&
+                        g.number === card.number
+                    )
+                )
+        _status.gongxiang.players = _status.gongxiang.players.filter(p => p!=get.translation(player.name))
+    },
+    group: ["共享_lose", "共享_gain", "共享_update", "共享_die"],
     subSkill: {
         lose: {
             charlotte: true,
+            firstDo:true,
             direct: true,
             trigger: {
                 player: ['useCardBefore', 'respondBefore', "loseBegin", "addToExpansionBegin"]
@@ -70,6 +102,7 @@
                 );
             },
             content() {
+                //获取事件中的"共享牌"
                 const sharedCards = trigger.cards.filter(card =>
                     _status.gongxiang.cards.some(g =>
                         g.name === card.name &&
@@ -77,6 +110,16 @@
                         g.number === card.number
                     )
                 );
+                //收集事件中的非"共享牌"
+                var ccards = []
+                ccards= trigger.cards.filter(card =>
+                            !sharedCards.some(c =>
+                                c.name === card.name &&
+                                c.suit === card.suit &&
+                                c.number === card.number
+                            )
+                        );
+                //找到真实牌，将共享牌移除游戏
                 game.players.forEach(p => {
                     const playerCards = p.getCards("h").filter(card =>
                         sharedCards.some(c =>
@@ -86,35 +129,20 @@
                         )
                     );
                     if (playerCards.some(c => _status.gongxiang.cards.includes(c))) {
-                        var cards = []
-                        player.lose(trigger.cards, ui.gongxiang)
-                        if (trigger.cards.length === 1) {
-                            cards = playerCards;
-                        } else {
-                            const newCards = trigger.cards.filter(card =>
-                                !sharedCards.some(c =>
-                                    c.name === card.name &&
-                                    c.suit === card.suit &&
-                                    c.number === card.number
-                                )
-                            );
-                            cards = newCards.concat(
-                                playerCards.filter(card => _status.gongxiang.cards.includes(card)
-                                )
-                            );
-                        }
-                        if (event.triggername == "useCardBegin") {
-                            trigger.cancel()
-                            player.useCard(cards, trigger.targets)
-                        }
-                        if (event.triggername == "addToExpansionBegin") {
-                            trigger.cards = cards
-                        }
-                        p.discard(cards)
-                    } else {
-                        p.lose(playerCards, ui.gongxiang)
-                    }
+                        var cards = playerCards.filter(
+                                card => _status.gongxiang.cards.includes(card)
+                            )
+                        ccards = ccards.concat(cards)         
+                    } 
+                    p.lose(playerCards, ui.gongxiang)
                 })
+                if (event.triggername == "useCardBegin") {
+                    trigger.cards = ccards
+                }
+                else if (event.triggername == "addToExpansionBegin") {
+                    trigger.cards = ccards
+                }
+                else if (trigger.type == "discard" || trigger.getParent(2).name == "recast" )game.cardsDiscard(ccards)
                 _status.gongxiang.cards = _status.gongxiang.cards.filter(g =>
                     !sharedCards.some(card =>
                         g.name === card.name &&
@@ -130,6 +158,7 @@
             },
             charlotte: true,
             direct: true,
+            firstDo:true,
             filter(event, player) {
                 return player.getCards("h").some(card => !card.hasGaintag('共享'))
             },
@@ -150,6 +179,7 @@
             },
             charlotte: true,
             direct: true,
+            firstDo:true,
             filter(event, player) {
                 var cards = player.getCards('h')
                 let less = _status.gongxiang.cards.some(g =>
@@ -174,7 +204,21 @@
                     player.gain(cards, "bySelf").gaintag.add("共享")
                 }
             }
-        }
+        },
+        die:{
+            trigger:{
+                global:"die",
+            },
+            charlotte: true,
+            firstDo:true,
+            direct: true,
+            filter:function(event,player){
+                return event.player.hasSkill("共享");
+            },
+            content(){
+                trigger.player.removeSkill("共享");
+            },
+        },
     }
 },
 ```
